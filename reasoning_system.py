@@ -18,14 +18,27 @@ def analyze_parts(problem):
 
     Client = genai.Client()
     response = Client.models.generate_content(
-    model="gemini-3.5-flash",
-    contents="Analyze the result into very samaller part. do a deep analyze and explain why:" +problem
+      model="gemini-3.5-flash",
+      contents="Analyze the result into very samaller part. do a deep analyze and explain why:" +problem
     )
     return(response)
 
-question = input("Write your complex thought here: ")
-result = decompose_problem(question)
-print(result.text)
+def summarize(analysis):
 
-result2 = analyze_parts(result.text)
-print(result2.text)
+    Client = genai.Client()
+    response = Client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents="Analyse all the thoughts, and give an impactful summary: "+analysis
+    )
+    return(response)
+
+
+question = input("Write your complex thought here: ")
+result_phase1 = decompose_problem(question)
+print(result_phase1.text)
+
+result_phase2 = analyze_parts(result_phase1.text)
+print(result_phase2.text)
+
+result_phase3 = summarize(result_phase2.text)
+print(result_phase3.text)
